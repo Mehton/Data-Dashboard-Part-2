@@ -1,4 +1,14 @@
 import React, { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  LineChart,
+  Line,
+} from "recharts";
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 const PRIVATE_API_KEY = import.meta.env.VITE_SERVER_API_KEY;
 import "./App.css";
@@ -14,6 +24,7 @@ const ComicsList = () => {
   const [averageComicsPerCharacter, setAverageComicsPerCharacter] = useState(0);
   const [medianComicsPerCharacter, setMedianComicsPerCharacter] = useState(0);
   const [modeComicsPerCharacter, setModeComicsPerCharacter] = useState(0);
+  const [currentChart, setCurrentChart] = useState("bar");
   const publicKey = API_KEY;
   const privateKey = PRIVATE_API_KEY;
 
@@ -28,21 +39,31 @@ const ComicsList = () => {
         const data = await response.json();
         if (data.code === 200) {
           const comicsData = data.data.results;
-          setComics(comicsData);
-          setTotalComics(comicsData.length);
+
+          // Filter comics to include only those with 1 or more characters and exclude "Marvel Previews (2017)"
+          const filteredComicsData = comicsData.filter(
+            (comic) =>
+              comic.characters.available > 0 &&
+              comic.title !== "Marvel Previews (2017)"
+          );
+
+          setComics(filteredComicsData);
+          setTotalComics(filteredComicsData.length);
           setAverageComicsPerCharacter(
-            comicsData.reduce(
+            filteredComicsData.reduce(
               (acc, comic) => acc + comic.characters.available,
               0
-            ) / comicsData.length
+            ) / filteredComicsData.length
           );
           setMedianComicsPerCharacter(
             calculateMedian(
-              comicsData.map((comic) => comic.characters.available)
+              filteredComicsData.map((comic) => comic.characters.available)
             )
           );
           setModeComicsPerCharacter(
-            calculateMode(comicsData.map((comic) => comic.characters.available))
+            calculateMode(
+              filteredComicsData.map((comic) => comic.characters.available)
+            )
           );
         } else {
           console.error("Error fetching comics:", data.status);
@@ -63,6 +84,15 @@ const ComicsList = () => {
       ? sorted[mid]
       : (sorted[mid - 1] + sorted[mid]) / 2;
   };
+
+  const toggleChart = () => {
+    setCurrentChart(currentChart === "bar" ? "line" : "bar");
+  };
+
+  const characterData = comics.map((comic) => ({
+    title: comic.title,
+    characters: comic.characters.available,
+  }));
 
   const calculateMode = (numbers) => {
     const frequency = {};
@@ -97,12 +127,6 @@ const ComicsList = () => {
           <li>
             <a href="#home">Home</a>
           </li>
-          <li>
-            <a href="#comics">Comics</a>
-          </li>
-          <li>
-            <a href="#favorites">Favorites</a>
-          </li>
         </ul>
       </nav>
 
@@ -111,7 +135,7 @@ const ComicsList = () => {
           <p>Loading...</p>
         ) : (
           <>
-            <div className="card">
+            <div className="card" style={{ flexDirection: "column" }}>
               <h2>Total Comics: {totalComics}</h2>
               <h3>
                 Average Comics per Character:{" "}
@@ -124,6 +148,30 @@ const ComicsList = () => {
                   ? modeComicsPerCharacter.join(", ")
                   : modeComicsPerCharacter}
               </h3>
+              <div>
+                <button onClick={toggleChart}>Toggle Chart</button>
+                {currentChart === "bar" ? (
+                  <BarChart width={600} height={300} data={characterData}>
+                    <XAxis dataKey="title" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="characters" fill="#8884d8" />
+                  </BarChart>
+                ) : (
+                  <LineChart width={600} height={300} data={characterData}>
+                    <XAxis dataKey="title" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="characters"
+                      stroke="#82ca9d"
+                    />
+                  </LineChart>
+                )}
+              </div>
             </div>
 
             <div className="filters">

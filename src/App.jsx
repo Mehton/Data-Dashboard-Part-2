@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -9,12 +10,15 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import ComicsList from "./Components/ComicsList";
+
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 const PRIVATE_API_KEY = import.meta.env.VITE_SERVER_API_KEY;
 import "./App.css";
 import md5 from "crypto-js/md5";
+import ComicDetail from "./Components/ComicDetail";
 
-const ComicsList = () => {
+const App = () => {
   const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -125,7 +129,9 @@ const ComicsList = () => {
       <nav className="navbar">
         <ul>
           <li>
-            <a href="#home">Home</a>
+            <Link style={{ color: "white" }} to="/">
+              Home
+            </Link>
           </li>
         </ul>
       </nav>
@@ -196,7 +202,6 @@ const ComicsList = () => {
                 )}
               </select>
 
-              {/* New Comic Type Filter */}
               <select onChange={(e) => setSelectedComicType(e.target.value)}>
                 <option value="">Select Comic Type</option>
                 <option value="comic">Comic</option>
@@ -206,18 +211,8 @@ const ComicsList = () => {
               </select>
             </div>
 
-            <div className="comics-list">
-              {filteredComics.map((comic) => (
-                <div className="comic-card" key={comic.id}>
-                  <h3>{comic.title}</h3>
-                  <img
-                    src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
-                    alt={comic.title}
-                    className="comic-image"
-                  />
-                </div>
-              ))}
-            </div>
+            <ComicsList filteredComics={filteredComics} />
+            <ComicDetail />
           </>
         )}
       </div>
@@ -225,4 +220,4 @@ const ComicsList = () => {
   );
 };
 
-export default ComicsList;
+export default App;

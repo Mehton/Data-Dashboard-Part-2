@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import md5 from "crypto-js/md5";
+import { Link } from "react-router-dom";
 
 const ComicDetail = () => {
   const { id } = useParams();
@@ -43,7 +44,20 @@ const ComicDetail = () => {
   if (error) return <p>{`Error: ${error}`}</p>;
 
   return (
-    <div>
+    <div className="app-container">
+      <header className="app-header">
+        <h1>Marvel Comics</h1>
+      </header>
+
+      <nav className="navbar">
+        <ul>
+          <li>
+            <Link style={{ color: "white" }} to="/">
+              Home
+            </Link>
+          </li>
+        </ul>
+      </nav>
       <h2>{comic.title}</h2>
       <img
         src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}

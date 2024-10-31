@@ -5,7 +5,11 @@ const ComicsList = ({ filteredComics }) => {
   return (
     <div className="comics-list">
       {filteredComics.map((comic) => (
-        <Link to={`/comics/${comic.id}`} key={comic.id} className="comic-card">
+        <Link
+          to={`/ComicDetail/${comic.id}`}
+          key={comic.id}
+          className="comic-card"
+        >
           <h3>{comic.title}</h3>
           <img
             src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}

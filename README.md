@@ -11,10 +11,10 @@ Time spent: **3** hours spent in total
 The following **required** functionality is completed:
 
 - [x] **The app includes at least one unique chart developed using the fetched data that tell an interesting story**
-- [ ] **Clicking on an item in the list view displays more details about it**
-  - [ ] To ensure an accurate grade, your sidebar **must** be viewable when showing the details view in your recording.
-- [ ] **Clicking on an item has a direct, unique link to that item's detail view page**
-  - [ ] To ensure an accurate grade, the URL/address bar of your web browser **must** be viewable in your recording.
+- [x] **Clicking on an item in the list view displays more details about it**
+  - [x] To ensure an accurate grade, your sidebar/Navbar **must** be viewable when showing the details view in your recording.
+- [x] **Clicking on an item has a direct, unique link to that item's detail view page**
+  - [x] To ensure an accurate grade, the URL/address bar of your web browser **must** be viewable in your recording.
 
 The following **optional** features are implemented:
 

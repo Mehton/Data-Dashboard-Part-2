@@ -16,7 +16,6 @@ const API_KEY = import.meta.env.VITE_APP_API_KEY;
 const PRIVATE_API_KEY = import.meta.env.VITE_SERVER_API_KEY;
 import "./App.css";
 import md5 from "crypto-js/md5";
-import ComicDetail from "./Components/ComicDetail";
 
 const App = () => {
   const [comics, setComics] = useState([]);
@@ -212,7 +211,6 @@ const App = () => {
             </div>
 
             <ComicsList filteredComics={filteredComics} />
-            <ComicDetail />
           </>
         )}
       </div>

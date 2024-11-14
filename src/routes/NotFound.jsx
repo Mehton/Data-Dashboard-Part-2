@@ -5,8 +5,8 @@ const NotFound = () => {
   return (
     <>
       <h1 style={{ color: "white", padding: "1rem" }}>Marvel Comics</h1>
-      <p>There's nothing in here!</p>
-      <Link style={{ color: "white", padding: "1rem" }} to="/">
+      <h1>There's nothing in here!</h1>
+      <Link style={{ color: "black", padding: "1rem" }} to="/">
         Back to Home
       </Link>
     </>
